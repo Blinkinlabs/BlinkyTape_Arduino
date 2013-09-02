@@ -31,7 +31,7 @@ void setup()
 
   LEDS.addLeds<WS2811, 5, GRB>(leds, LED_COUNT);
   LEDS.showColor(CRGB(0, 0, 0));
-  LEDS.setBrightness(230); // 90% brightness
+  LEDS.setBrightness(93); // Limit max current draw to 1A
   LEDS.show();
   
   // Read the animation data from the end of the program memory, and construct a new Animation from it.

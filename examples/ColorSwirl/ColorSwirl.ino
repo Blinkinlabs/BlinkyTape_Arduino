@@ -29,7 +29,7 @@ void setup()
   
   LEDS.addLeds<WS2811, LED_OUT, GRB>(leds, LED_COUNT);
   LEDS.showColor(CRGB(0, 0, 0));
-  LEDS.setBrightness(230); // 90% brightness
+  LEDS.setBrightness(93); // Limit max current draw to 1A
   LEDS.show();
    
   last_time = millis();
