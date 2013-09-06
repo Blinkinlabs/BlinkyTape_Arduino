@@ -43,13 +43,13 @@ void setcolor(int colorcode) {
 // we'll make the color fade in and out by setting the brightness
 void pulse(int wait_time) {
   // let's fade up by scaling the brightness
-  for(int scale = 0; scale < 128; scale++) { 
+  for(int scale = 0; scale < 93; scale++) { 
     LEDS.setBrightness(scale);
     LEDS.show();
     delay(wait_time);
   }
   // now let's fade down by scaling the brightness
-  for(int scale = 128; scale > 0; scale--) { 
+  for(int scale = 93; scale > 0; scale--) { 
     LEDS.setBrightness(scale);
     LEDS.show();
     delay(wait_time);
