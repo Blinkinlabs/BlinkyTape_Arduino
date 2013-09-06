@@ -42,7 +42,8 @@ void setcolor(int colorcode) {
 
 // we'll make the color fade in and out by setting the brightness
 void pulse(int wait_time) {
-  // let's fade up by scaling the brightness
+  // let's fade up by scaling the brightness - in general, brightness shouldn't go above 93, so the strip won't draw too much power.
+  // Oh, and 93 is plenty bright!
   for(int scale = 0; scale < 93; scale++) { 
     LEDS.setBrightness(scale);
     LEDS.show();
