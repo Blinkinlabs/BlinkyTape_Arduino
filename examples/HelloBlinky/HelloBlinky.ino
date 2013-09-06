@@ -30,11 +30,11 @@ void setcolor(int colorcode) {
     switch(colorcode) { 
       // there are several ways to set colors. We're going to pass a CRGB here, but there are other methods.  
       // See the Fast2Dev example for the others
-      case 0: leds[i] = CRGB(10 + (i*3),0,0); break; // using the 'i' term will create a brightness gradient in active color 
+      case 0: leds[i] = CRGB(i*3,0,0); break; // using the 'i' term will create a brightness gradient in active color 
     
-      case 1: leds[i] = CRGB(0,10 + (i*3),0); break;
+      case 1: leds[i] = CRGB(0,i*3,0); break;
     
-      case 2: leds[i] = CRGB(0,0,10 + (i*3)); break;
+      case 2: leds[i] = CRGB(0,0,i*3); break;
     }
   }
   LEDS.show();
