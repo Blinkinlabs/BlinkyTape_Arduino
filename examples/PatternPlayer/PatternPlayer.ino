@@ -23,8 +23,6 @@ struct CRGB leds[LED_COUNT];
 
 #endif
 
-Animation pov;
-
 void setup()
 {  
   Serial.begin(57600);
@@ -33,26 +31,6 @@ void setup()
   LEDS.showColor(CRGB(0, 0, 0));
   LEDS.setBrightness(93); // Limit max current draw to 1A
   LEDS.show();
-  
-  // Read the animation data from the end of the program memory, and construct a new Animation from it.
-  int frameCount;
-  prog_uint8_t* frameData;
-
-  // These could be whereever, but need to agree with Processing.
-  #define CONTROL_DATA_ADDRESS (0x7000 - 4)
-  #define FRAME_DATA_ADDRESS   (CONTROL_DATA_ADDRESS)
-  #define FRAME_COUNT_ADDRESS  (CONTROL_DATA_ADDRESS + 2)
-
-  frameData  =
-  (prog_uint8_t*)((pgm_read_byte(FRAME_DATA_ADDRESS    ) << 8)
-                  + (pgm_read_byte(FRAME_DATA_ADDRESS + 1)));
-               
-  frameCount = (pgm_read_byte(FRAME_COUNT_ADDRESS    ) << 8)
-             + (pgm_read_byte(FRAME_COUNT_ADDRESS + 1));
-             
-  
-  pov.init(frameCount, frameData, ENCODING_RGB565_RLE, LED_COUNT);
-  
 }
 
 void serialLoop() {
