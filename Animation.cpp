@@ -1,7 +1,7 @@
 #include "Animation.h"
 
 Animation::Animation() {
-  init(0, NULL, ENCODING_NONE, 0);
+  init(0, NULL, ENCODING_RGB24, 0);
 }
 
 Animation::Animation(uint16_t frameCount,
@@ -22,9 +22,7 @@ void Animation::init(uint16_t frameCount,
   m_frameData = const_cast<prog_uint8_t*>(frameData);
   m_encoding = encoding;
   m_ledCount = ledCount;
-
-  m_frameIndex = 0;
-  currentFrameData = m_frameData;
+  reset();
 }
  
 void Animation::reset() {
@@ -34,10 +32,10 @@ void Animation::reset() {
 
 void Animation::draw(struct CRGB strip[]) {
   switch(m_encoding) {
-    case ENCODING_NONE:
+    case ENCODING_RGB24:
       drawNoEncoding(strip);
       break;
-    case ENCODING_16RLE:
+    case ENCODING_RGB565_RLE:
       draw16bitRLE(strip);
       break;
   }
@@ -61,7 +59,8 @@ void Animation::draw16bitRLE(struct CRGB strip[]) {
 
   // Read runs of RLE data until we get enough data.
   uint8_t count = 0;
-  while(count < 60) {
+  while(count < m_ledCount) {
+    // TODO: Test if we're going to read from an invalid location?
     uint8_t run_length = 0x7F & pgm_read_byte(currentFrameData);
     uint8_t upperByte = pgm_read_byte(currentFrameData + 1);
     uint8_t lowerByte = pgm_read_byte(currentFrameData + 2);

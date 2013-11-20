@@ -51,7 +51,7 @@ void setup()
              + (pgm_read_byte(FRAME_COUNT_ADDRESS + 1));
              
   
-  pov.init(frameCount, frameData, ENCODING_16RLE, LED_COUNT);
+  pov.init(frameCount, frameData, ENCODING_RGB565_RLE, LED_COUNT);
   
 }
 

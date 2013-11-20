@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #include <FastSPI_LED2.h>
 
-#define ENCODING_NONE  0
-#define ENCODING_16RLE 1
+#define ENCODING_RGB24      0
+#define ENCODING_RGB565_RLE 1
 
 class Animation {
  private:
@@ -22,10 +22,16 @@ class Animation {
   
  public:
   Animation();
-  Animation(uint16_t frameCount, const prog_uint8_t* frameData, const uint8_t encoding, const uint8_t ledCount);
+  Animation(uint16_t frameCount,
+            const prog_uint8_t* frameData,
+            const uint8_t encoding,
+            const uint8_t ledCount);
 
   // Re-initialize the animation with new information
-  void init(uint16_t frameCount, const prog_uint8_t* frameData, const uint8_t encoding, const uint8_t ledCount);
+  void init(uint16_t frameCount,
+            const prog_uint8_t* frameData,
+            const uint8_t encoding,
+            const uint8_t ledCount);
  
   // Reset the animation
   void reset();
