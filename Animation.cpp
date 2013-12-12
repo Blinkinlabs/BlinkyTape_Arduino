@@ -22,27 +22,50 @@ void Animation::init(uint16_t frameCount,
   m_frameData = const_cast<prog_uint8_t*>(frameData);
   m_encoding = encoding;
   m_ledCount = ledCount;
+
+  switch(m_encoding) {
+    case ENCODING_RGB24:
+    case ENCODING_RGB565_RLE:
+      // Nothing to preload.
+      break;
+    case ENCODING_INDEXED:
+      // Load the color table into memory
+      // TODO: Free this memory somewhere?
+      colorTableEntries = pgm_read_byte(m_frameData);
+      colorTable = (CRGB *)malloc(colorTableEntries*sizeof(CRGB));
+
+      for(int i = 0; i < colorTableEntries; i++) {
+        colorTable[i] = CRGB(pgm_read_byte(m_frameData + 1 + i*3    ),
+                             pgm_read_byte(m_frameData + 1 + i*3 + 1),
+                             pgm_read_byte(m_frameData + 1 + i*3 + 2));
+      }
+      break;
+  }
+
   reset();
 }
  
 void Animation::reset() {
   m_frameIndex = 0;
-  currentFrameData = m_frameData;
 }
 
 void Animation::draw(struct CRGB strip[]) {
   switch(m_encoding) {
     case ENCODING_RGB24:
-      drawNoEncoding(strip);
+      drawRgb24(strip);
       break;
     case ENCODING_RGB565_RLE:
-      draw16bitRLE(strip);
+      drawRgb16_RLE(strip);
+      break;
+    case ENCODING_INDEXED:
+      drawIndexed(strip);
       break;
   }
 };
 
-void Animation::drawNoEncoding(struct CRGB strip[]) {
-  currentFrameData = m_frameData + m_frameIndex*m_ledCount*3;
+void Animation::drawRgb24(struct CRGB strip[]) {
+  currentFrameData = m_frameData
+    + m_frameIndex*m_ledCount*3;  // Offset for current frame
   
   for(uint8_t i = 0; i < m_ledCount; i+=1) {
     strip[i] = CRGB(pgm_read_byte(currentFrameData + i*3    ),
@@ -55,12 +78,28 @@ void Animation::drawNoEncoding(struct CRGB strip[]) {
   m_frameIndex = (m_frameIndex + 1)%m_frameCount;
 }
 
-void Animation::draw16bitRLE(struct CRGB strip[]) {
+void Animation::drawIndexed(struct CRGB strip[]) {
+  currentFrameData = m_frameData
+    + 1 + 3*colorTableEntries   // Offset for color table
+    + m_frameIndex*m_ledCount;  // Offset for current frame
+  
+  for(uint8_t i = 0; i < m_ledCount; i+=1) {
+    strip[i] = colorTable[pgm_read_byte(currentFrameData + i)];
+  }
+  
+  LEDS.show();
+  
+  m_frameIndex = (m_frameIndex + 1)%m_frameCount;
+}
+
+void Animation::drawRgb16_RLE(struct CRGB strip[]) {
+  if(m_frameIndex == 0) {
+    currentFrameData = m_frameData;
+  }
 
   // Read runs of RLE data until we get enough data.
   uint8_t count = 0;
   while(count < m_ledCount) {
-    // TODO: Test if we're going to read from an invalid location?
     uint8_t run_length = 0x7F & pgm_read_byte(currentFrameData);
     uint8_t upperByte = pgm_read_byte(currentFrameData + 1);
     uint8_t lowerByte = pgm_read_byte(currentFrameData + 2);
@@ -81,7 +120,5 @@ void Animation::draw16bitRLE(struct CRGB strip[]) {
   LEDS.show();
 
   m_frameIndex = (m_frameIndex + 1)%m_frameCount;
-  if(m_frameIndex == 0) {
-    currentFrameData = m_frameData;
-  }
 };
+
