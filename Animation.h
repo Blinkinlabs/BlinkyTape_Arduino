@@ -4,26 +4,28 @@
 #include <Arduino.h>
 #include <FastSPI_LED2.h>
 
-#define ENCODING_RGB24      0
-#define ENCODING_RGB565_RLE 1
-#define ENCODING_INDEXED    2
+#define ENCODING_RGB24       0
+#define ENCODING_RGB565_RLE  1
+#define ENCODING_INDEXED     2
+#define ENCODING_INDEXED_RLE 3
 
 class Animation {
  private:
-  uint8_t m_ledCount;           // Number of LEDs in the strip (max 254)
-  uint16_t m_frameCount;        // Number of frames in this animation (max 65535)
-  uint8_t m_encoding;           // Encoding type
-  prog_uint8_t* m_frameData;    // Pointer to the begining of the frame data
+  uint8_t ledCount;               // Number of LEDs in the strip (max 254)
+  uint16_t frameCount;            // Number of frames in this animation (max 65535)
+  uint8_t encoding;               // Encoding type
+  prog_uint8_t* frameData;        // Pointer to the begining of the frame data
   
-  uint16_t m_frameIndex;           // Current animation frame
-  prog_uint8_t* currentFrameData;  // Pointer to the current position in the frame data
+  uint16_t frameIndex;            // Current animation frame
+  prog_uint8_t* currentFrameData; // Pointer to the current position in the frame data
 
-  uint8_t colorTableEntries;       // Number of entries in the color table, minus 1 (max 255)
-  struct CRGB* colorTable;         // Pointer to color table, if used by the encoder
+  uint8_t colorTableEntries;      // Number of entries in the color table, minus 1 (max 255)
+  struct CRGB* colorTable;        // Pointer to color table, if used by the encoder
 
-  void drawRgb24(struct CRGB strip[]);      // Draw the next
-  void drawIndexed(struct CRGB strip[]);  
-  void drawRgb16_RLE(struct CRGB strip[]);  // 
+  void drawRgb24(struct CRGB strip[]);
+  void drawRgb16_RLE(struct CRGB strip[]);
+  void drawIndexed(struct CRGB strip[]);
+  void drawIndexed_RLE(struct CRGB strip[]);
 
  public:
   // Initialize the animation with no data. This is intended for the case
