@@ -1,6 +1,6 @@
 
 
-#include <FastSPI_LED2.h>
+#include <FastLED.h>
 #include <Animation.h>
 
 #define LED_COUNT 60

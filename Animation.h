@@ -2,7 +2,7 @@
 #define ANIMATION_H
 
 #include <Arduino.h>
-#include <FastSPI_LED2.h>
+#include <FastLED.h>
 
 #define ENCODING_RGB24       0
 #define ENCODING_RGB565_RLE  1
