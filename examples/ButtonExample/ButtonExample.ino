@@ -1,4 +1,4 @@
-#include <FastSPI_LED2.h>
+#include <FastLED.h>
 #include <Button.h> // http://github.com/virgildisgr4ce/Button
 
 #define LED_COUNT 60

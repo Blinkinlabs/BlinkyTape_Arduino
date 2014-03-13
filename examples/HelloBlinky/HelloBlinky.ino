@@ -1,4 +1,4 @@
-#include <FastSPI_LED2.h>
+#include <FastLED.h>
 #include <Animation.h>
 
 #define LED_COUNT 60 // BlinkyTape has 60 LEDs!
@@ -12,8 +12,8 @@ struct CRGB leds[LED_COUNT]; // this struct contains 60 CRGB values.  This is wh
 
 int color_set = 0;
 
-// first, let's get ready to blink using some FastSPI_LED2 routines
-// take a look at the FastSPI_LED2 example called Fast2Dev for more usage info
+// first, let's get ready to blink using some FastLED routines
+// take a look at the FastLED example called Fast2Dev for more usage info
 void setup()
 {  
   LEDS.addLeds<WS2811, PIN_SIGNAL, GRB>(leds, LED_COUNT); // this configures the BlinkyBoard - leave as is.
