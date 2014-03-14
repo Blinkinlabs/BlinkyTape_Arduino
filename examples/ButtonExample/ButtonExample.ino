@@ -37,9 +37,9 @@ void onPress(Button& b) {
     powerup_start = powerup_start - (cooldown_length - (powerup_start - cooldown_start));
     draw_mode = POWERUP_MODE;
   }
-//  if(draw_mode == PARTY_MODE) {
-//    draw_mode = COLOR_MODE;
-//  }
+  if(draw_mode == PARTY_MODE) {
+    draw_mode = COLOR_MODE;
+  }
 }
 
 void onRelease(Button& b) {
@@ -141,12 +141,12 @@ void party_loop() {
     last_time = millis();
   }
   if(party_on) {
-    for(int x = LED_COUNT; x >= 0; x--) {
+    for(int x = LED_COUNT - 1; x >= 0; x--) {
       leds[x] = CRGB(255,255,255);
     }
   }
   else {
-    for(int x = LED_COUNT; x >= 0; x--) {
+    for(int x = LED_COUNT - 1; x >= 0; x--) {
       leds[x] = CRGB(0,0,0);
     }
   }
