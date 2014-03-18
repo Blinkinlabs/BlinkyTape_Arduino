@@ -16,7 +16,7 @@ int color_set = 0;
 // take a look at the FastLED example called Fast2Dev for more usage info
 void setup()
 {  
-  LEDS.addLeds<WS2811, PIN_SIGNAL, GRB>(leds, LED_COUNT); // this configures the BlinkyBoard - leave as is.
+  LEDS.addLeds<WS2812B, PIN_SIGNAL, GRB>(leds, LED_COUNT); // this configures the BlinkyBoard - leave as is.
   LEDS.showColor(CRGB(0, 0, 0)); // set the color for the strip all at once.
   LEDS.setBrightness(0); // start out with LEDs off
   LEDS.show(); // you'll always need to call this function to make your changes happen.

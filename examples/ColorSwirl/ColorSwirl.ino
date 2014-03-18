@@ -23,7 +23,7 @@ void setup()
 {  
   Serial.begin(57600);
   
-  LEDS.addLeds<WS2811, LED_OUT, GRB>(leds, LED_COUNT);
+  LEDS.addLeds<WS2812B, LED_OUT, GRB>(leds, LED_COUNT);
   LEDS.showColor(CRGB(0, 0, 0));
   LEDS.setBrightness(93); // Limit max current draw to 1A
   LEDS.show();
