@@ -14,10 +14,10 @@ class Animation {
   uint8_t ledCount;               // Number of LEDs in the strip (max 254)
   uint16_t frameCount;            // Number of frames in this animation (max 65535)
   uint8_t encoding;               // Encoding type
-  prog_uint8_t* frameData;        // Pointer to the begining of the frame data
+  uint8_t* frameData PROGMEM;        // Pointer to the begining of the frame data
   
   uint16_t frameIndex;            // Current animation frame
-  prog_uint8_t* currentFrameData; // Pointer to the current position in the frame data
+  uint8_t* currentFrameData PROGMEM; // Pointer to the current position in the frame data
 
   uint8_t colorTableEntries;      // Number of entries in the color table, minus 1 (max 255)
   struct CRGB* colorTable;        // Pointer to color table, if used by the encoder
@@ -39,7 +39,7 @@ class Animation {
   // @param encoding Method used to encode the animation data
   // @param ledCount Number of LEDs in the strip
   Animation(uint16_t frameCount,
-            const prog_uint8_t* frameData,
+            const uint8_t* frameData PROGMEM,
             const uint8_t encoding,
             const uint8_t ledCount);
 
@@ -49,7 +49,7 @@ class Animation {
   // @param encoding Method used to encode the animation data
   // @param ledCount Number of LEDs in the strip
   void init(uint16_t frameCount,
-            const prog_uint8_t* frameData,
+            const uint8_t* frameData PROGMEM,
             const uint8_t encoding,
             const uint8_t ledCount);
  

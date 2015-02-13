@@ -1,4 +1,4 @@
-const PROGMEM prog_uint8_t animationData[]  = {
+const uint8_t animationData[] PROGMEM = {
    60, 0x00, 0x00,
    29, 0x00, 0x00,
     1, 0x10, 0x78,

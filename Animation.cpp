@@ -5,7 +5,7 @@ Animation::Animation() {
 }
 
 Animation::Animation(uint16_t frameCount_,
-                     const prog_uint8_t* frameData_,
+                     const uint8_t* frameData_ PROGMEM,
                      const uint8_t encoding_,
                      const uint8_t ledCount_)
 {
@@ -14,12 +14,12 @@ Animation::Animation(uint16_t frameCount_,
 }
 
 void Animation::init(uint16_t frameCount_,
-                     const prog_uint8_t* frameData_,
+                     const uint8_t* frameData_ PROGMEM,
                      const uint8_t encoding_,
                      const uint8_t ledCount_)
 {
   frameCount = frameCount_;
-  frameData = const_cast<prog_uint8_t*>(frameData_);
+  frameData = (uint8_t*)frameData_;
   encoding = encoding_;
   ledCount = ledCount_;
 
