@@ -1,5 +1,4 @@
 #include <FastLED.h>
-#include <Animation.h>
 
 #define LED_COUNT 60 // BlinkyTape has 60 LEDs!
 struct CRGB leds[LED_COUNT]; // this struct contains 60 CRGB values.  This is where 
