@@ -1,7 +1,7 @@
 #ifndef BLINKY_TAPE_H
 #define BLINKY_TAPE_H
 
-#define LED_COUNT 50
+#define LED_COUNT 60
 
 #define LED_OUT       13
 #define BUTTON_IN     10
