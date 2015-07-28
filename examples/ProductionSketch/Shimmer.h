@@ -11,10 +11,10 @@ class Shimmer : public Pattern {
     uint8_t direction[LED_COUNT];
     
     // TODO: Loss of precision here affects output.
-//    float value[LED_COUNT];
-//    float death[LED_COUNT];
-    uint8_t value[LED_COUNT];
-    uint8_t death[LED_COUNT];
+    float value[LED_COUNT];
+    float death[LED_COUNT];
+//    uint8_t value[LED_COUNT];
+//    uint8_t death[LED_COUNT];
     
     uint8_t stepSize;
     uint8_t ledMax;
