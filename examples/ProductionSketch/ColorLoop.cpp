@@ -17,7 +17,7 @@ void ColorLoop::reset() {
 }
 
 void ColorLoop::draw(CRGB* leds) {
-  for (uint8_t i = 0; i < LED_COUNT; i++) {
+  for (uint16_t i = 0; i < LED_COUNT; i++) {
     leds[i].r = 64*(1+sin(i/2.0 + j/4.0  )) * rBal;
     leds[i].g = 64*(1+sin(i/1.0 + f/9.0 + 2.1)) * gBal;
     leds[i].b = 64*(1+sin(i/3.0 + k/14.0 + 4.2)) * bBal;

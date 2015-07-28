@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-Scanner::Scanner(uint8_t newScanWidth, CRGB newColor) :
+Scanner::Scanner(uint16_t newScanWidth, CRGB newColor) :
   scanWidth(newScanWidth),
   color(newColor) {
   }
@@ -14,7 +14,7 @@ void Scanner::reset() {
 }
 
 void Scanner::draw(CRGB* leds) {  
-  for (uint8_t i = 0; i < LED_COUNT; i++) {
+  for (uint16_t i = 0; i < LED_COUNT; i++) {
     if((i >= position) && (i < position + scanWidth)) {
       leds[i] = color;
     }

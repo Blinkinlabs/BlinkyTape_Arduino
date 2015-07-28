@@ -38,7 +38,7 @@ void Shimmer::SetColorTemperature(uint8_t newColorTemperature) {
 void Shimmer::reset() {
   
     //Shimmer initiation
-  for (uint8_t i = 0; i < LED_COUNT; i++)
+  for (uint16_t i = 0; i < LED_COUNT; i++)
   {
     value[i] = 0.0;
     maxValue[i] = random(ledMax);

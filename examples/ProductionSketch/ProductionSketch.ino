@@ -129,6 +129,12 @@ ISR(TIMER4_OVF_vect) {
   }
 }
 
+ColorLoop originalRainbow(1,1,1);
+ColorLoop blueRainbow(.2,1,1);
+Scanner scanner(4, CRGB(255,0,0));
+Flashlight flashlight(CRGB(255,255,255));
+Shimmer shimmer(0);
+
 void setup()
 {  
   Serial.begin(57600);
@@ -148,11 +154,11 @@ void setup()
   PCMSK0 |= (1 << PCINT6); // Set interrupt mask to the button pin (PCINT6)
   PCICR  |= (1 << PCIE0);  // Enable interrupt
   
-  registerPattern(new ColorLoop(1,1,1));
-  registerPattern(new ColorLoop(.2,1,1));
-  registerPattern(new Scanner(4, CRGB(255,0,0)));
-  registerPattern(new Shimmer(0));
-  registerPattern(new Flashlight(CRGB(255,255,255)));
+  registerPattern(&originalRainbow);
+  registerPattern(&blueRainbow);
+  registerPattern(&scanner);
+  registerPattern(&shimmer);
+  registerPattern(&flashlight);
   
 
   // Attempt to read in the last used pattern; if it's an invalid

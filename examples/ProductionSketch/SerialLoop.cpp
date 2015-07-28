@@ -3,37 +3,38 @@
 
 #include <Arduino.h>
 
+#define PIXEL_DATA_SIZE 3
+
 void serialLoop(CRGB* leds) {
-  
-  static int pixelIndex;
-  int idx = 0;
-  uint8_t buffer[3];
+  uint16_t currentPixel;     // Pixel that should be written to next
+  uint8_t buffer[PIXEL_DATA_SIZE];        // Buffer to store incoming pixel data
+  uint8_t bufferIndex = 0;  // Write index into the pixel buffer
   uint8_t c;
   
+  // Wait for serial data
   while(true) {
     if (Serial.available() > 0) {
       c = Serial.read();
       if (c == 255) {
-    LEDS.show();
-    pixelIndex = 0;
-    idx = 0;   
-    // BUTTON_IN (D10):   07 - 0111
-    // EXTRA_PIN_A(D7):          11 - 1011
-    // EXTRA_PIN_B (D11):        13 - 1101
-    // ANALOG_INPUT (A9): 14 - 1110
-    
-    char c = (digitalRead(BUTTON_IN)    << 3)
-      | (digitalRead(EXTRA_PIN_A)  << 2)
-      | (digitalRead(EXTRA_PIN_B)  << 1)
-      | (digitalRead(ANALOG_INPUT)     );
-    Serial.write(c);
-      } else {        
-        buffer[idx++] = c;
-        if (idx == 3) {
-          if(pixelIndex == LED_COUNT) break; // Prevent overflow by ignoring the pixel data beyond LED_COUNT
-          leds[pixelIndex] = CRGB(buffer[0], buffer[1], buffer[2]);
-          pixelIndex++;
-          idx = 0;
+	LEDS.show();
+	currentPixel = 0;
+	bufferIndex = 0;
+	
+//	uint8_t data = (digitalRead(BUTTON_IN) << 3)
+//	  | (digitalRead(EXTRA_PIN_A) << 2)
+//	  | (digitalRead(EXTRA_PIN_B) << 1)
+//	  | (digitalRead(ANALOG_INPUT) << 0);
+//	Serial.write(data);
+
+      } else {
+        
+        buffer[bufferIndex++] = c;
+        if (bufferIndex == PIXEL_DATA_SIZE) {
+          if(currentPixel < LED_COUNT) {
+            leds[currentPixel] = CRGB(buffer[0], buffer[1], buffer[2]);
+            currentPixel++;
+          }
+          bufferIndex = 0;
         }
       }
     }
