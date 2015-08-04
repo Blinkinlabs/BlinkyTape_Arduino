@@ -1,7 +1,9 @@
 #ifndef BLINKY_TAPE_H
 #define BLINKY_TAPE_H
 
-#define LED_COUNT 60          // Number of LEDs connected to the board. This is also the maximum number of LEDs that can be controlled via serial
+#include <FastLED.h>
+
+#define LED_COUNT 64    // Number of LEDs connected to the board. This is also the maximum number of LEDs that can be controlled via serial
 
 #define LED_OUT       13
 #define BUTTON_IN     10

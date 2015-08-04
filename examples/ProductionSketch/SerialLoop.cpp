@@ -1,4 +1,3 @@
-#include "ColorLoop.h"
 #include "BlinkyTape.h"
 
 #include <Arduino.h>
