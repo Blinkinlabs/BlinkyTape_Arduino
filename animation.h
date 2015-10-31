@@ -4,11 +4,6 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-#define ENCODING_RGB24       0
-#define ENCODING_RGB565_RLE  1
-#define ENCODING_INDEXED     2
-#define ENCODING_INDEXED_RLE 3
-
 class Animation {
  public:
   typedef enum {
@@ -53,6 +48,7 @@ class Animation {
  private:
   uint16_t ledCount;              // Number of LEDs in the strip (max 254)
   uint16_t frameCount;            // Number of frames in this animation (max 65535)
+
   Encoding encoding;              // Encoding type
   PGM_P frameData;                // Pointer to the begining of the frame data
   
@@ -60,7 +56,12 @@ class Animation {
   PGM_P currentFrameData;         // Pointer to the current position in the frame data
 
   uint8_t colorTableEntries;      // Number of entries in the color table, minus 1 (max 255)
-  struct CRGB* colorTable;        // Pointer to color table, if used by the encoder
+  struct CRGB colorTable[256];
+
+  void loadColorTable();          // Load the color table from memory
+
+  typedef void (Animation::*DrawFunction)(struct CRGB strip[]);
+  DrawFunction drawFunction;
 
   void drawRgb24(struct CRGB strip[]);
   void drawRgb16_RLE(struct CRGB strip[]);

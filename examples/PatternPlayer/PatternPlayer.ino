@@ -1,10 +1,9 @@
 #include <FastLED.h>
-//#include <avr/pgmspace.h>
-#include <Animation.h>
+#include <animation.h>
 
-#include "animation.h"
+#include "samplePattern.h"
 
-#define LED_COUNT 60
+#define LED_COUNT 64
 struct CRGB leds[LED_COUNT];
 
 #define LED_OUT      13 
@@ -54,7 +53,7 @@ void serialLoop() {
       } else {        
         buffer[idx++] = c;
         if (idx == 3) {
-          if(pixelIndex == MAX_LEDS) break; // Prevent overflow by ignoring the pixel data beyond LED_COUNT
+          if(pixelIndex == LED_COUNT) break; // Prevent overflow by ignoring the pixel data beyond LED_COUNT
           leds[pixelIndex] = CRGB(buffer[0], buffer[1], buffer[2]);
           pixelIndex++;
           idx = 0;

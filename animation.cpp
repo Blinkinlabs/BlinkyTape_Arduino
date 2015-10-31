@@ -1,6 +1,7 @@
 #include "Animation.h"
 
-Animation::Animation() {
+Animation::Animation()
+{
   init(0, NULL, RGB24, 0);
 }
 
@@ -19,52 +20,49 @@ void Animation::init(uint16_t frameCount_,
                      uint16_t ledCount_)
 {
   frameCount = frameCount_;
-  frameData = (PGM_P)frameData_;
+  frameData = frameData_;
   encoding = encoding_;
   ledCount = ledCount_;
 
   switch(encoding) {
-    case ENCODING_RGB24:
-    case ENCODING_RGB565_RLE:
-      // Nothing to preload.
+    case RGB24:
+      drawFunction = &Animation::drawRgb24;
       break;
-    case ENCODING_INDEXED:
-    case ENCODING_INDEXED_RLE:
-      // Load the color table into memory
-      // TODO: Free this memory somewhere?
-      colorTableEntries = pgm_read_byte(frameData) + 1;
-      colorTable = (CRGB *)malloc(colorTableEntries*sizeof(CRGB));
 
-      for(int i = 0; i < colorTableEntries; i++) {
-        colorTable[i] = CRGB(pgm_read_byte(frameData + 1 + i*3    ),
-                             pgm_read_byte(frameData + 1 + i*3 + 1),
-                             pgm_read_byte(frameData + 1 + i*3 + 2));
-      }
+    case RGB565_RLE:
+      drawFunction = &Animation::drawRgb16_RLE;
+      break;
+
+    case INDEXED:
+      drawFunction = &Animation::drawIndexed;
+      loadColorTable();
+      break;
+
+    case INDEXED_RLE:
+      drawFunction = &Animation::drawIndexed_RLE;
+      loadColorTable();
       break;
   }
 
   reset();
 }
  
+void Animation::loadColorTable() {
+  colorTableEntries = pgm_read_byte(frameData) + 1;
+
+  for(int i = 0; i < colorTableEntries; i++) {
+    colorTable[i] = CRGB(pgm_read_byte(frameData + 1 + i*3    ),
+                         pgm_read_byte(frameData + 1 + i*3 + 1),
+                         pgm_read_byte(frameData + 1 + i*3 + 2));
+  }
+}
+
 void Animation::reset() {
   frameIndex = 0;
 }
 
 void Animation::draw(struct CRGB strip[]) {
-  switch(encoding) {
-    case ENCODING_RGB24:
-      drawRgb24(strip);
-      break;
-    case ENCODING_RGB565_RLE:
-      drawRgb16_RLE(strip);
-      break;
-    case ENCODING_INDEXED:
-      drawIndexed(strip);
-      break;
-    case ENCODING_INDEXED_RLE:
-      drawIndexed_RLE(strip);
-      break;
-  }
+  (this->*drawFunction)(strip);
 
   LEDS.show();
   
