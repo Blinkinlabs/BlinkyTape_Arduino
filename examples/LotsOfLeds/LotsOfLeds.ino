@@ -1,7 +1,6 @@
 #include <EEPROM.h>
 
 #include <FastLED.h>
-#include <Animation.h>
 
 #include "BlinkyTape.h"
 #include "ColorLoop.h"

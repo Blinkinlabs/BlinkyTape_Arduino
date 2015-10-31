@@ -3,7 +3,7 @@
 
 #include "samplePattern.h"
 
-#define LED_COUNT 64
+#define LED_COUNT 60*5
 struct CRGB leds[LED_COUNT];
 
 #define LED_OUT      13 

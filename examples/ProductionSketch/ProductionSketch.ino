@@ -1,8 +1,6 @@
-#include <EEPROM.h>
-
 // This is the example sketch that gets loaded on every BlinkyTape during production!
+#include <EEPROM.h>
 #include <FastLED.h>
-#include <Animation.h>
 
 #include "BlinkyTape.h"
 #include "ColorLoop.h"
@@ -17,8 +15,8 @@ struct CRGB leds[LED_COUNT];
 #define STARTING_BRIGHTNESS 4
 volatile uint8_t brightnesSteps[BRIGHT_STEP_COUNT] = {5,15,40,70,93, 70, 40, 15};
 
-uint8_t brightness = 4;
-uint8_t lastBrightness = 4;
+uint8_t brightness = STARTING_BRIGHTNESS;
+uint8_t lastBrightness = STARTING_BRIGHTNESS;
 
 
 // For fading in a new sketch

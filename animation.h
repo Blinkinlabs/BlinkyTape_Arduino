@@ -46,8 +46,8 @@ class Animation {
   void draw(struct CRGB strip[]);
 
  private:
-  uint16_t ledCount;              // Number of LEDs in the strip (max 254)
-  uint16_t frameCount;            // Number of frames in this animation (max 65535)
+  uint16_t ledCount;              // Number of LEDs in the strip
+  uint16_t frameCount;            // Number of frames in this animation
 
   Encoding encoding;              // Encoding type
   PGM_P frameData;                // Pointer to the begining of the frame data
@@ -56,7 +56,7 @@ class Animation {
   PGM_P currentFrameData;         // Pointer to the current position in the frame data
 
   uint8_t colorTableEntries;      // Number of entries in the color table, minus 1 (max 255)
-  struct CRGB colorTable[256];
+  struct CRGB colorTable[256];    // Color table
 
   void loadColorTable();          // Load the color table from memory
 
