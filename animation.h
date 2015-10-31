@@ -11,6 +11,13 @@
 
 class Animation {
  public:
+  typedef enum {
+    RGB24 = 0,
+    RGB565_RLE = 1,
+    INDEXED = 2,
+    INDEXED_RLE = 3
+  } Encoding;
+
   // Initialize the animation with no data. This is intended for the case
   // where the animation will be re-initialized from a memory structure in ROM
   // after the sketch starts.
@@ -23,7 +30,7 @@ class Animation {
   // @param ledCount Number of LEDs in the strip
   Animation(uint16_t frameCount,
             PGM_P frameData,
-            uint8_t encoding,
+            Encoding encoding,
             uint16_t ledCount);
 
   // Re-initialize the animation with new information
@@ -33,7 +40,7 @@ class Animation {
   // @param ledCount Number of LEDs in the strip
   void init(uint16_t frameCount,
             PGM_P frameData,
-            uint8_t encoding,
+            Encoding encoding,
             uint16_t ledCount);
  
   // Reset the animation, causing it to start over from frame 0.
@@ -46,7 +53,7 @@ class Animation {
  private:
   uint16_t ledCount;              // Number of LEDs in the strip (max 254)
   uint16_t frameCount;            // Number of frames in this animation (max 65535)
-  uint8_t encoding;               // Encoding type
+  Encoding encoding;              // Encoding type
   PGM_P frameData;                // Pointer to the begining of the frame data
   
   uint16_t frameIndex;            // Current animation frame

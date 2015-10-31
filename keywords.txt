@@ -1,3 +1,13 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
 Animation	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+init            KEYWORD2
 reset		KEYWORD2
 draw		KEYWORD2

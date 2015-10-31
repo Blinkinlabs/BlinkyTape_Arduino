@@ -1,12 +1,12 @@
 #include "Animation.h"
 
 Animation::Animation() {
-  init(0, NULL, ENCODING_RGB24, 0);
+  init(0, NULL, RGB24, 0);
 }
 
 Animation::Animation(uint16_t frameCount_,
                      PGM_P frameData_,
-                     uint8_t encoding_,
+                     Encoding encoding_,
                      uint16_t ledCount_)
 {
   init(frameCount_, frameData_, encoding_, ledCount_);
@@ -15,7 +15,7 @@ Animation::Animation(uint16_t frameCount_,
 
 void Animation::init(uint16_t frameCount_,
                      PGM_P frameData_,
-                     uint8_t encoding_,
+                     Encoding encoding_,
                      uint16_t ledCount_)
 {
   frameCount = frameCount_;
