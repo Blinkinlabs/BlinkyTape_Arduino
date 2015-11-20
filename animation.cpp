@@ -30,7 +30,7 @@ void Animation::init(uint16_t frameCount_,
       break;
 
     case RGB565_RLE:
-      drawFunction = &Animation::drawRgb16_RLE;
+      drawFunction = &Animation::drawRgb565_RLE;
       break;
 
     case INDEXED:
@@ -80,7 +80,7 @@ void Animation::drawRgb24(struct CRGB strip[]) {
   }
 }
 
-void Animation::drawRgb16_RLE(struct CRGB strip[]) {
+void Animation::drawRgb565_RLE(struct CRGB strip[]) {
   if(frameIndex == 0) {
     currentFrameData = frameData;
   }
@@ -88,7 +88,7 @@ void Animation::drawRgb16_RLE(struct CRGB strip[]) {
   // Read runs of RLE data until we get enough data.
   uint16_t count = 0;
   while(count < ledCount) {
-    uint16_t run_length = 0x7F & pgm_read_byte(currentFrameData);
+    uint8_t run_length = pgm_read_byte(currentFrameData);
     uint8_t upperByte = pgm_read_byte(currentFrameData + 1);
     uint8_t lowerByte = pgm_read_byte(currentFrameData + 2);
     
@@ -97,7 +97,7 @@ void Animation::drawRgb16_RLE(struct CRGB strip[]) {
               | ((lowerByte & 0xE0) >> 3);
     uint8_t b = ((lowerByte & 0x1F) << 3);
     
-    for(uint16_t i = 0; i < run_length; i++) {
+    for(uint8_t i = 0; i < run_length; i++) {
       strip[count + i] = CRGB(r,g,b);
     }
     
@@ -125,10 +125,10 @@ void Animation::drawIndexed_RLE(struct CRGB strip[]) {
   // Read runs of RLE data until we get enough data.
   uint16_t count = 0;
   while(count < ledCount) {
-    uint16_t run_length = pgm_read_byte(currentFrameData++);
+    uint8_t run_length = pgm_read_byte(currentFrameData++);
     uint8_t colorIndex = pgm_read_byte(currentFrameData++);
     
-    for(uint16_t i = 0; i < run_length; i++) {
+    for(uint8_t i = 0; i < run_length; i++) {
       strip[count++] = colorTable[colorIndex];
     }
   }

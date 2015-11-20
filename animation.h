@@ -64,7 +64,7 @@ class Animation {
   DrawFunction drawFunction;
 
   void drawRgb24(struct CRGB strip[]);
-  void drawRgb16_RLE(struct CRGB strip[]);
+  void drawRgb565_RLE(struct CRGB strip[]);
   void drawIndexed(struct CRGB strip[]);
   void drawIndexed_RLE(struct CRGB strip[]);
 };
