@@ -9,7 +9,8 @@
 #include "Scanner.h"
 #include "Flashlight.h"
 
-struct CRGB leds[LED_COUNT];
+// Allow longer patterns to be played back from serial, just don't draw the default patterns on them.
+struct CRGB leds[LED_COUNT*4];
 
 #define BRIGHT_STEP_COUNT 8
 #define STARTING_BRIGHTNESS 4
