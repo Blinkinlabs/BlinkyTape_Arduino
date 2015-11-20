@@ -29,7 +29,7 @@ void serialLoop(CRGB* leds) {
         
         buffer[bufferIndex++] = c;
         if (bufferIndex == PIXEL_DATA_SIZE) {
-          if(currentPixel < LED_COUNT) {
+          if(currentPixel < CONNECTED_LEDS) {
             leds[currentPixel] = CRGB(buffer[0], buffer[1], buffer[2]);
             currentPixel++;
           }

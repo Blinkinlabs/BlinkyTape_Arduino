@@ -3,7 +3,8 @@
 
 #include <FastLED.h>
 
-#define LED_COUNT 64    // Number of LEDs connected to the board. This is also the maximum number of LEDs that can be controlled via serial
+#define LED_COUNT 64                // Number of LEDs to display the patterns on
+#define CONNECTED_LEDS LED_COUNT*4  // Number of LEDs connected to the board
 
 #define LED_OUT       13
 #define BUTTON_IN     10

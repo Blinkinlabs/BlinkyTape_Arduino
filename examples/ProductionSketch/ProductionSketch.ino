@@ -10,7 +10,7 @@
 #include "Flashlight.h"
 
 // Allow longer patterns to be played back from serial, just don't draw the default patterns on them.
-struct CRGB leds[LED_COUNT*4];
+struct CRGB leds[CONNECTED_LEDS];
 
 #define BRIGHT_STEP_COUNT 8
 #define STARTING_BRIGHTNESS 4
@@ -138,7 +138,7 @@ void setup()
 {  
   Serial.begin(57600);
   
-  LEDS.addLeds<WS2811, LED_OUT, GRB>(leds, LED_COUNT);
+  LEDS.addLeds<WS2811, LED_OUT, GRB>(leds, CONNECTED_LEDS);
   LEDS.setBrightness(brightnesSteps[brightness]);
   LEDS.show();
 
