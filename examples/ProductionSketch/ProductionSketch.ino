@@ -138,7 +138,6 @@ void setup()
   Serial.begin(57600);
   
   LEDS.addLeds<WS2811, LED_OUT, GRB>(leds, LED_COUNT);
-  brightness = STARTING_BRIGHTNESS;
   LEDS.setBrightness(brightnesSteps[brightness]);
   LEDS.show();
 
@@ -182,6 +181,8 @@ void loop()
 {
   // If'n we get some data, switch to passthrough mode
   if(Serial.available() > 0) {
+    // Make sure w're fully on the new brightness
+    LEDS.setBrightness(brightnesSteps[brightness]);
     serialLoop(leds);
   }
   
