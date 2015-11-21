@@ -4,7 +4,7 @@
 #include <FastLED.h>
 
 #define LED_COUNT 64                // Number of LEDs to display the patterns on
-#define CONNECTED_LEDS LED_COUNT*4  // Number of LEDs connected to the board
+#define CONNECTED_LEDS 300          // Number of LEDs connected to the board (5m*60led/m)
 
 #define LED_OUT       13
 #define BUTTON_IN     10
