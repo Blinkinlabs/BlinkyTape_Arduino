@@ -170,7 +170,7 @@ void setup()
   }
   else {
     EEPROM.write(EEPROM_START_ADDRESS, EEPROM_MAGIG_BYTE_0);
-    EEPROM.write(EEPROM_START_ADDRESS, EEPROM_MAGIC_BYTE_1);
+    EEPROM.write(EEPROM_START_ADDRESS + 1, EEPROM_MAGIC_BYTE_1);
     currentPattern = 0;
   }
      
