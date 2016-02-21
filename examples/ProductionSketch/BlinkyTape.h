@@ -3,8 +3,8 @@
 
 #include <FastLED.h>
 
-#define LED_COUNT 64                // Number of LEDs to display the patterns on
-#define CONNECTED_LEDS 300          // Number of LEDs connected to the board (5m*60led/m)
+const uint16_t LED_COUNT = 64;       // Number of LEDs to display the patterns on
+const uint16_t MAX_LEDS = 500;       // Maximum number of LEDs that can be controlled
 
 #define LED_OUT       13
 #define BUTTON_IN     10

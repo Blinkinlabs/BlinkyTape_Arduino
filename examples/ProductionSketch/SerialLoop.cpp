@@ -4,6 +4,8 @@
 
 #define PIXEL_DATA_SIZE 3
 
+extern CLEDController* controller;
+
 void serialLoop(CRGB* leds) {
   uint16_t currentPixel;     // Pixel that should be written to next
   uint8_t buffer[PIXEL_DATA_SIZE];        // Buffer to store incoming pixel data
@@ -15,21 +17,21 @@ void serialLoop(CRGB* leds) {
     if (Serial.available() > 0) {
       c = Serial.read();
       if (c == 255) {
-	LEDS.show();
-	currentPixel = 0;
-	bufferIndex = 0;
-	
-//	uint8_t data = (digitalRead(BUTTON_IN) << 3)
-//	  | (digitalRead(EXTRA_PIN_A) << 2)
-//	  | (digitalRead(EXTRA_PIN_B) << 1)
-//	  | (digitalRead(ANALOG_INPUT) << 0);
-//	Serial.write(data);
+        
+        // Check if we need to enable more output LEDs
+        if(currentPixel > controller->size()) {
+          controller->setLeds(leds, currentPixel - 1);
+        }
+        
+        LEDS.show();
+        currentPixel = 0;
+        bufferIndex = 0;
 
       } else {
         
         buffer[bufferIndex++] = c;
         if (bufferIndex == PIXEL_DATA_SIZE) {
-          if(currentPixel < CONNECTED_LEDS) {
+          if(currentPixel < MAX_LEDS) {
             leds[currentPixel] = CRGB(buffer[0], buffer[1], buffer[2]);
             currentPixel++;
           }
