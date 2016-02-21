@@ -55,18 +55,23 @@ class Animation {
   uint16_t frameIndex;            // Current animation frame
   PGM_P currentFrameData;         // Pointer to the current position in the frame data
 
+#ifdef SUPPORTS_PALLETE_ENCODING
   uint8_t colorTableEntries;      // Number of entries in the color table, minus 1 (max 255)
   struct CRGB colorTable[256];    // Color table
 
   void loadColorTable();          // Load the color table from memory
+#endif
 
   typedef void (Animation::*DrawFunction)(struct CRGB strip[]);
   DrawFunction drawFunction;
 
   void drawRgb24(struct CRGB strip[]);
   void drawRgb565_RLE(struct CRGB strip[]);
+
+#ifdef SUPPORTS_PALLETE_ENCODING
   void drawIndexed(struct CRGB strip[]);
   void drawIndexed_RLE(struct CRGB strip[]);
+#endif
 };
 
 #endif

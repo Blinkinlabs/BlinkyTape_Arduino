@@ -33,6 +33,7 @@ void Animation::init(uint16_t frameCount_,
       drawFunction = &Animation::drawRgb565_RLE;
       break;
 
+#ifdef SUPPORTS_PALLETE_ENCODING
     case INDEXED:
       drawFunction = &Animation::drawIndexed;
       loadColorTable();
@@ -42,11 +43,13 @@ void Animation::init(uint16_t frameCount_,
       drawFunction = &Animation::drawIndexed_RLE;
       loadColorTable();
       break;
+#endif
   }
 
   reset();
 }
  
+#ifdef SUPPORTS_PALLETE_ENCODING
 void Animation::loadColorTable() {
   colorTableEntries = pgm_read_byte(frameData) + 1;
 
@@ -56,6 +59,7 @@ void Animation::loadColorTable() {
                          pgm_read_byte(frameData + 1 + i*3 + 2));
   }
 }
+#endif
 
 void Animation::reset() {
   frameIndex = 0;
@@ -106,6 +110,7 @@ void Animation::drawRgb565_RLE(struct CRGB strip[]) {
   }
 };
 
+#ifdef SUPPORTS_PALLETE_ENCODING
 void Animation::drawIndexed(struct CRGB strip[]) {
   currentFrameData = frameData
     + 1 + 3*colorTableEntries   // Offset for color table
@@ -133,4 +138,4 @@ void Animation::drawIndexed_RLE(struct CRGB strip[]) {
     }
   }
 };
-
+#endif
