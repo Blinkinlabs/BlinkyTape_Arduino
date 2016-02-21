@@ -9,13 +9,12 @@
 #include "Scanner.h"
 #include "Flashlight.h"
 
-// Allow longer patterns to be played back from serial, just don't draw the default patterns on them.
-struct CRGB leds[MAX_LEDS];
-
-CLEDController* controller;
+// LED data array
+struct CRGB leds[MAX_LEDS];   // Space to hold the current LED data
+CLEDController* controller;   // LED controller
 
 const uint8_t brightnessCount = 8;
-volatile uint8_t brightnesSteps[brightnessCount] = {93, 70, 40, 15,5,15,40,70};
+uint8_t brightnesSteps[brightnessCount] = {93, 70, 40, 15,5,15,40,70};
 
 uint8_t currentBrightness;
 uint8_t lastBrightness;
@@ -25,7 +24,7 @@ uint8_t lastBrightness;
 long lastTime;
 
 float fadeIndex;
-#define FADE_STEPS 50
+const uint8_t fadeSteps = 50;
 
 // Button interrupt variables and Interrupt Service Routine
 uint8_t buttonState = 0;
@@ -45,14 +44,21 @@ long buttonPressTime = 0;
 
 uint8_t currentPattern = 0;
 uint8_t patternCount = 0;
-#define MAX_PATTERNS 10
-Pattern* patterns[MAX_PATTERNS];
+const uint8_t maxPatternCount = 15;
+Pattern* patterns[maxPatternCount];
+
+// Our patterns
+ColorLoop originalRainbow(1,1,1);
+ColorLoop blueRainbow(.2,1,1);
+Scanner scanner(4, CRGB(255,0,0));
+Flashlight flashlight(CRGB(255,255,255));
+Shimmer shimmer(1,1,1);
 
 
 // Register a pattern
 void registerPattern(Pattern* newPattern) {
-  // If there is space for this pattern
-  if(MAX_PATTERNS <= patternCount) {
+  // Only add the pattern if there is space for it.
+  if(patternCount >= maxPatternCount) {
     return;
   }
   
@@ -61,15 +67,13 @@ void registerPattern(Pattern* newPattern) {
 }
 
 // Change the current pattern
-void initializePattern(uint8_t newPattern) {
-  // Check if this is a valid pattern
-  if(newPattern >= MAX_PATTERNS) {
-    return;
+void setPattern(uint8_t newPattern) {
+  currentPattern = newPattern%patternCount;
+
+  if(EEPROM.read(PATTERN_EEPROM_ADDRESS) != currentPattern) {
+    EEPROM.write(PATTERN_EEPROM_ADDRESS, currentPattern);
   }
   
-  EEPROM.write(PATTERN_EEPROM_ADDRESS, newPattern);
-  
-  currentPattern = newPattern;
   patterns[currentPattern]->reset();
   
   lastTime = millis();
@@ -77,15 +81,15 @@ void initializePattern(uint8_t newPattern) {
 }
 
 void setBrightness(uint8_t newBrightness) {
-  currentBrightness = newBrightness;
+  currentBrightness = newBrightness%brightnessCount;
+
+  if(EEPROM.read(BRIGHTNESS_EEPROM_ADDRESS) != currentBrightness) {
+    EEPROM.write(BRIGHTNESS_EEPROM_ADDRESS, currentBrightness);
+  }
+  
   LEDS.setBrightness(brightnesSteps[currentBrightness]);
-  EEPROM.write(BRIGHTNESS_EEPROM_ADDRESS, currentBrightness);
 }
 
-// Run one step of the current pattern
-void runPattern() {
-  patterns[currentPattern]->draw(leds);
-}
 
 
 // Called when the button is both pressed and released.
@@ -118,7 +122,7 @@ ISR(TIMER4_OVF_vect) {
     buttonDebounced = true;
     lastBrightness = currentBrightness;
     
-    setBrightness((currentBrightness + 1) % brightnessCount);
+    setBrightness(currentBrightness + 1);
   }
   
   // If we've waited long enough, switch the pattern
@@ -128,27 +132,16 @@ ISR(TIMER4_OVF_vect) {
     // first unroll the brightness!
     setBrightness(lastBrightness);
     
-    initializePattern((currentPattern+1)%patternCount);
+    setPattern(currentPattern+1);
     
     // Finally, reset the button down time, so we don't advance again too quickly
     buttonDownTime = millis();
   }
 }
 
-ColorLoop originalRainbow(1,1,1);
-ColorLoop blueRainbow(.2,1,1);
-Scanner scanner(4, CRGB(255,0,0));
-Flashlight flashlight(CRGB(255,255,255));
-Shimmer shimmer(1,1,1);
-
 void setup()
 {  
   Serial.begin(57600);
-  
-  controller = &(LEDS.addLeds<WS2811, LED_OUT, GRB>(leds, LED_COUNT));
-  
-  LEDS.setBrightness(brightnesSteps[currentBrightness]);
-  LEDS.show();
 
   pinMode(BUTTON_IN, INPUT_PULLUP);
   pinMode(ANALOG_INPUT, INPUT_PULLUP);
@@ -167,30 +160,24 @@ void setup()
   registerPattern(&flashlight);
   
 
-  // Attempt to read in the last used pattern; if it's an invalid
-  // number, initialize it to 0 instead.
-  if((EEPROM.read(EEPROM_START_ADDRESS) == EEPROM_MAGIG_BYTE_0)
-     && (EEPROM.read(EEPROM_START_ADDRESS + 1) == EEPROM_MAGIC_BYTE_1)) {
-    currentPattern = EEPROM.read(PATTERN_EEPROM_ADDRESS);
-    if(currentPattern >= patternCount) {
-      currentPattern = 0;
-    }
-    
-    currentBrightness = EEPROM.read(BRIGHTNESS_EEPROM_ADDRESS);
-    if(currentBrightness >= brightnessCount) {
-      currentBrightness = 0;
-    }
-  }
-  else {
+  // If the EEPROM hasn't been initialized, do so now
+  if((EEPROM.read(EEPROM_START_ADDRESS) != EEPROM_MAGIG_BYTE_0)
+     || (EEPROM.read(EEPROM_START_ADDRESS + 1) != EEPROM_MAGIC_BYTE_1)) {
     EEPROM.write(EEPROM_START_ADDRESS, EEPROM_MAGIG_BYTE_0);
     EEPROM.write(EEPROM_START_ADDRESS + 1, EEPROM_MAGIC_BYTE_1);
+    EEPROM.write(PATTERN_EEPROM_ADDRESS, 0);
+    EEPROM.write(BRIGHTNESS_EEPROM_ADDRESS, 0);
+  }
 
-    currentPattern = 0;
+  // Read in the last-used pattern and brightness
+  currentPattern = EEPROM.read(PATTERN_EEPROM_ADDRESS);
+  currentBrightness = EEPROM.read(BRIGHTNESS_EEPROM_ADDRESS); 
 
-    setBrightness(0);
-  }     
-  
-  initializePattern(currentPattern);
+  setPattern(currentPattern);
+  setBrightness(currentBrightness);
+
+  controller = &(LEDS.addLeds<WS2811, LED_OUT, GRB>(leds, DEFAULT_LED_COUNT));
+  LEDS.show();
 }
 
 void loop()
@@ -203,13 +190,13 @@ void loop()
   }
   
   // Draw the current pattern
-  runPattern();
+  patterns[currentPattern]->draw(leds);
 
-  if((fadeIndex < FADE_STEPS) && (millis() - lastTime > 15)) {
+  if((fadeIndex < fadeSteps) && (millis() - lastTime > 15)) {
     lastTime = millis();
     fadeIndex++;
     
-    LEDS.setBrightness(brightnesSteps[currentBrightness]*(fadeIndex/FADE_STEPS));
+    LEDS.setBrightness(brightnesSteps[currentBrightness]*(fadeIndex/fadeSteps));
   }
 
   LEDS.show();

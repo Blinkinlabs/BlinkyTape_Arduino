@@ -14,7 +14,7 @@ void Scanner::reset() {
 }
 
 void Scanner::draw(CRGB* leds) {  
-  for (uint16_t i = 0; i < LED_COUNT; i++) {
+  for (uint16_t i = 0; i < DEFAULT_LED_COUNT; i++) {
     if((i >= position) && (i < position + scanWidth)) {
       leds[i] = color;
     }
@@ -31,7 +31,7 @@ void Scanner::draw(CRGB* leds) {
     position -= 1;
   }
   
-  if(position > LED_COUNT - scanWidth) {
+  if(position > DEFAULT_LED_COUNT - scanWidth) {
     direction = 1;
   }
   else if(position == 0) {

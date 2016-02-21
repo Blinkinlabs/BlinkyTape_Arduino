@@ -8,7 +8,7 @@ Flashlight::Flashlight(CRGB newColor) :
   }
 
 void Flashlight::draw(CRGB* leds) {  
-  for (uint16_t i = 0; i < LED_COUNT; i++) {
+  for (uint16_t i = 0; i < DEFAULT_LED_COUNT; i++) {
     leds[i] = color;
   }
 }

@@ -67,7 +67,7 @@ uint8_t ShimmerDot::getValue() {
 
 
 void Shimmer::reset() { 
-  for (uint16_t i = 0; i < LED_COUNT; i++)
+  for (uint16_t i = 0; i < DEFAULT_LED_COUNT; i++)
   {
     shimmerDots[i].reset();
   }
@@ -80,7 +80,7 @@ Shimmer::Shimmer(float r, float g, float b) :
 }
 
 void Shimmer::draw(CRGB* leds) { 
-  for (uint16_t i = 0; i < LED_COUNT; i++) {
+  for (uint16_t i = 0; i < DEFAULT_LED_COUNT; i++) {
     shimmerDots[i].update();
 
     leds[i].r = (uint8_t)(shimmerDots[i].getValue() * color_temp_factor_r);
