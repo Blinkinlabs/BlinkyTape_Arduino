@@ -44,7 +44,7 @@ long buttonPressTime = 0;
 
 uint8_t currentPattern = 0;
 uint8_t patternCount = 0;
-const uint8_t maxPatternCount = 15;
+const uint8_t maxPatternCount = 10;
 Pattern* patterns[maxPatternCount];
 
 // Our patterns

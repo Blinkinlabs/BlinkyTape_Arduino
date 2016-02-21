@@ -4,7 +4,7 @@
 #include <FastLED.h>
 
 const uint16_t DEFAULT_LED_COUNT = 64;  // Number of LEDs to display the patterns on
-const uint16_t MAX_LEDS = 500;          // Maximum number of LEDs that can be controlled
+const uint16_t MAX_LEDS = 512;          // Maximum number of LEDs that can be controlled
 
 #define LED_OUT       13
 #define BUTTON_IN     10
