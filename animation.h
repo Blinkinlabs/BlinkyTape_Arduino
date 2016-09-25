@@ -24,7 +24,7 @@ class Animation {
   // @param encoding Method used to encode the animation data
   // @param ledCount Number of LEDs in the strip
   Animation(uint16_t frameCount,
-            PGM_P frameData,
+            PGM_VOID_P frameData,
             Encoding encoding,
             uint16_t ledCount);
 
@@ -34,7 +34,7 @@ class Animation {
   // @param encoding Method used to encode the animation data
   // @param ledCount Number of LEDs in the strip
   void init(uint16_t frameCount,
-            PGM_P frameData,
+            PGM_VOID_P frameData,
             Encoding encoding,
             uint16_t ledCount);
  
@@ -50,10 +50,10 @@ class Animation {
   uint16_t frameCount;            // Number of frames in this animation
 
   Encoding encoding;              // Encoding type
-  PGM_P frameData;                // Pointer to the begining of the frame data
+  PGM_VOID_P frameData;           // Pointer to the begining of the frame data
   
   uint16_t frameIndex;            // Current animation frame
-  PGM_P currentFrameData;         // Pointer to the current position in the frame data
+  PGM_VOID_P currentFrameData;    // Pointer to the current position in the frame data
 
 #ifdef SUPPORTS_PALLETE_ENCODING
   uint8_t colorTableEntries;      // Number of entries in the color table, minus 1 (max 255)

@@ -6,7 +6,7 @@ Animation::Animation()
 }
 
 Animation::Animation(uint16_t frameCount_,
-                     PGM_P frameData_,
+                     PGM_VOID_P frameData_,
                      Encoding encoding_,
                      uint16_t ledCount_)
 {
@@ -15,7 +15,7 @@ Animation::Animation(uint16_t frameCount_,
 }
 
 void Animation::init(uint16_t frameCount_,
-                     PGM_P frameData_,
+                     PGM_VOID_P frameData_,
                      Encoding encoding_,
                      uint16_t ledCount_)
 {
