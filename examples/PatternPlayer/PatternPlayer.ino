@@ -17,8 +17,6 @@ uint8_t brightnesSteps[BRIGHT_STEP_COUNT] = {5,15,40,70,93};
 uint8_t brightness = 4;
 uint8_t lastButtonState = 1;
 
-int frameDelay = 30; // Number of ms each frame should be displayed.
-
 void setup()
 {  
   Serial.begin(57600);
@@ -43,13 +41,13 @@ void serialLoop() {
     if (Serial.available() > 0) {
       c = Serial.read();
       if (c == 255) {
-	LEDS.show();
-	pixelIndex = 0;
-	idx = 0;   
-	// BUTTON_IN (D10):   07 - 0111
-	// EXTRA_PIN_A(D7):          11 - 1011
-	// EXTRA_PIN_B (D11):        13 - 1101
-	// ANALOG_INPUT (A9): 14 - 1110
+    LEDS.show();
+    pixelIndex = 0;
+    idx = 0;   
+    // BUTTON_IN (D10):   07 - 0111
+    // EXTRA_PIN_A(D7):          11 - 1011
+    // EXTRA_PIN_B (D11):        13 - 1101
+    // ANALOG_INPUT (A9): 14 - 1110
       } else {        
         buffer[idx++] = c;
         if (idx == 3) {
@@ -79,7 +77,8 @@ void loop()
   lastButtonState = buttonState;
   
   animation.draw(leds);
+  
   // TODO: More sophisticated wait loop to get constant framerate.
-  delay(frameDelay);
+  delay(animation.getFrameDelay());
 }
 

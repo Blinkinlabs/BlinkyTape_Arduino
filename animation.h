@@ -9,8 +9,10 @@ class Animation {
   typedef enum {
     RGB24 = 0,
     RGB565_RLE = 1,
+#ifdef SUPPORTS_PALLETE_ENCODING
     INDEXED = 2,
     INDEXED_RLE = 3
+#endif
   } Encoding;
 
   // Initialize the animation with no data. This is intended for the case
@@ -23,20 +25,24 @@ class Animation {
   // @param frameData Pointer to the frame data. Format of this data is encoding-specficic
   // @param encoding Method used to encode the animation data
   // @param ledCount Number of LEDs in the strip
+  // @param frameDelay Number of milliseconds to wait between frames
   Animation(uint16_t frameCount,
             PGM_VOID_P frameData,
             Encoding encoding,
-            uint16_t ledCount);
+            uint16_t ledCount,
+            uint16_t frameDelay);
 
   // Re-initialize the animation with new information
   // @param frameCount Number of frames in this animation
   // @param frameData Pointer to the frame data. Format of this data is encoding-specficic
   // @param encoding Method used to encode the animation data
   // @param ledCount Number of LEDs in the strip
+  // @param frameDelay Number of milliseconds to wait between frames
   void init(uint16_t frameCount,
             PGM_VOID_P frameData,
             Encoding encoding,
-            uint16_t ledCount);
+            uint16_t ledCount,
+            uint16_t frameDelay);
  
   // Reset the animation, causing it to start over from frame 0.
   void reset();
@@ -45,9 +51,14 @@ class Animation {
   // @param strip[] LED strip to draw to.
   void draw(struct CRGB strip[]);
 
+  uint16_t getLedCount() const;
+  uint16_t getFrameCount() const;
+  uint16_t getFrameDelay() const;
+
  private:
   uint16_t ledCount;              // Number of LEDs in the strip
   uint16_t frameCount;            // Number of frames in this animation
+  uint16_t frameDelay;            // Milliseconds to wait between frames
 
   Encoding encoding;              // Encoding type
   PGM_VOID_P frameData;           // Pointer to the begining of the frame data
