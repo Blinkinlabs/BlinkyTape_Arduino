@@ -6,9 +6,7 @@ before_install:
   - source <(curl -SLs https://raw.githubusercontent.com/blinkinlabs/travis-ci-arduino/master/install.sh)
 
 install:
-#  - sudo apt-get -y install qt57[QTPACKAGE] qt57serialport libusb-1.0-0-dev
-#  - sudo apt-get -y --force-yes install gcc-arm-none-eabi dfu-util
-#  - sudo apt-get -y install eagle
+  - arduino --install-library "FastLED"
 
 script:
 # Build Arduino examples
