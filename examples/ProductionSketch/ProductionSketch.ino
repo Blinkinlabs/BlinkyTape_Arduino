@@ -14,7 +14,7 @@ struct CRGB leds[MAX_LEDS];   // Space to hold the current LED data
 CLEDController* controller;   // LED controller
 
 const uint8_t brightnessCount = 8;
-uint8_t brightnesSteps[brightnessCount] = {93, 70, 40, 15,5,15,40,70};
+const uint8_t brightnesSteps[brightnessCount] = {93, 70, 40, 15, 7, 15, 40, 70};
 
 uint8_t currentBrightness;
 uint8_t lastBrightness;
