@@ -166,13 +166,13 @@ void setup()
   PCIFR  |= (1 << PCIF0);  // Just in case, clear interrupt flag
   PCMSK0 |= (1 << PCINT6); // Set interrupt mask to the button pin (PCINT6)
   PCICR  |= (1 << PCIE0);  // Enable interrupt
-  
-  registerPattern(&originalRainbow);
+
+  registerPattern(&shimmer);
+//  registerPattern(&flashlight);
   registerPattern(&blueRainbow);
   registerPattern(&scanner);
-  registerPattern(&shimmer);
-  registerPattern(&flashlight);
-  
+  registerPattern(&originalRainbow);
+
 
   // If the EEPROM hasn't been initialized, do so now
   if((EEPROM.read(EEPROM_START_ADDRESS) != EEPROM_MAGIG_BYTE_0)
